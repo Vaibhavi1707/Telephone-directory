@@ -13,7 +13,7 @@ struct Contact_Details
   char date_of_birth[11];
 };
 
-int main(void)
+int search(void)
 {
   //View function.
   int search_choice, i, number_of_contacts, index=0, search_array[100];
