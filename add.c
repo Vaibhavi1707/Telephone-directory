@@ -20,25 +20,39 @@ int main()
 	scanf("%d",&n);
 	printf("NOTE : Enter '-' if you donot have that particular type of info\n");
 	struct data_base info;
-	fp=fopen("data_base.dat","a");
+	fp=fopen("data_base.txt","a");
+
 	//if(fp==NULL)
 		//printf("FILE IS MISSING\n");
 	while(n > 0)	
 	{
 		printf("Enter full name(separate by -) : ");
 		scanf("%s",info.name);
+		fputs(info.name,fp);
+		fprintf(fp,"\t");
 		printf("Enter phone number1 : ");
 		scanf("%s",info.phone1);
+		fputs(info.phone1,fp);
+		fprintf(fp,"\t");
 		printf("Enter phone number2 : ");
 		scanf("%s",info.phone2);
+		fputs(info.phone2,fp);
+		fprintf(fp,"\t");
 		printf("Enter email : ");
 		scanf("%s",info.email);
+		fputs(info.email,fp);
+		fprintf(fp,"\t");
 		printf("Enter address(separate by -) : ");
 		scanf("%s",info.address);
+		fputs(info.address,fp);
+		fprintf(fp,"\t");
 		printf("Enter occupation(separate by -) : ");
 		scanf("%s",info.occupation);
-		fwrite(&info,sizeof(info),1,fp);
+		fputs(info.occupation,fp);
+		fprintf(fp,"\t");
+		//fwrite(&info,sizeof(info),1,fp);
 		n--;
+		fprintf(fp,"\n");
 		if(n>0)
 		{
 			printf("Do you want to continue(Press 1 for YES and Press 0 for NO) : ");
