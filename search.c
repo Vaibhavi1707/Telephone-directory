@@ -2,21 +2,77 @@
 #include<stdlib.h>
 #include<string.h>
 
-struct Contact_Details
+int string_compare(char array1[100], char array2[100])
 {
-  char name[50];
-  char phone_number1[11];
-  char phone_number2[11];
-  char email_address[40];
-  char residential_address[175];
-  char occupation[175];
-  char date_of_birth[11];
-};
+  int compare=0, count=0, i;
+  if(strlen(array1)==strlen(array2))
+  {
+    for(i=0;i<strlen(array1);i++)
+    {
+      if(array1[i]==array2[i] || abs((int)array1[i]-(int)array2[i])==32)
+      count++;
+    }
+    if(count!=strlen(array1))
+      compare=1;
+  }
+  else
+    compare=1;
+  return compare;
+}
 
-int search(void)
+void garbage_handle(char array[175])
 {
-  //View function.
-  int search_choice, i, number_of_contacts, index=0, search_array[100];
+  int length=0;
+  while(array[length]!='\0')
+  {
+    printf("%c",array[length]);
+    length++;
+  }
+}
+
+void print2D(char array2d[7][175])
+{
+  printf("\n");
+  printf("Name                : ");
+  garbage_handle(array2d[0]);
+  printf("\nPhone Number        : ");
+  garbage_handle(array2d[1]);
+  if(array2d[2][0]!='-')
+  { 
+    printf("\n                      ");
+    garbage_handle(array2d[2]);
+  }
+  if(array2d[3][0]!='-')
+  {
+    printf("\nEmail Address       : ");
+    garbage_handle(array2d[3]);
+  }
+  if(array2d[4][0]!='-')
+  {
+    printf("\nResidential Address : ");
+    garbage_handle(array2d[4]);
+  }
+  if(array2d[5][0]!='-')
+  {
+    printf("\nOccupation          : ");
+    garbage_handle(array2d[5]);
+  }
+  if(array2d[6][0]!='-')
+  {
+    printf("\nDate of Birth       : ");
+    garbage_handle(array2d[6]);
+  }
+  printf("\n");
+}
+
+void search(void)
+{
+  FILE* fp=fopen("data_base.txt","a+");
+  char single_contact[2000];
+  char details[7][175];
+  char name_2Darray[6][50];
+  char occupation_2Darray[6][50];
+  int search_choice, row, column, dashes, i, j, check=0, r, c;
   printf("Please select the appropriate option to search through in the directory\n");
   printf("Enter\n");
   printf("1 for searching through NAME\n");
@@ -25,136 +81,168 @@ int search(void)
   printf("4 for searching through OCCUPATION\n");
   printf("5 for searching through DATE OF BIRTH\n");
   scanf("%d",&search_choice);
-  struct Contact_Details contacts[number_of_contacts];
+  char search_name[50];
+  char search_phone[50];
+  char search_email[50];
+  char search_occupation[50];
+  char search_dob[50];
   switch(search_choice)
   {
-    case 1: printf("Please enter the name to be searched in the directory\n");
-            char search_name[50];
+    case 1: system("clear");
+            printf("Please enter the name to be searched in the directory\n");
             scanf("%s",search_name);
-            int dashes;
-            for(i=0;i<number_of_contacts;i++)
-            {
-              dashes=0;
-              for(int j=0;j<strlen(contacts[i].name);j++)
-              {
-                if(contacts[i].name[j]=='-')
-                dashes++;
-              }
-              char name_array[dashes+1][50];
-              int row=0, column=0;
-              for(int j=0;j<strlen(contacts[i].name);j++)
-              {
-                if(contacts[i].name[j]!='-')
-                {
-                  array[row][column]=contacts[i].name[j];
-                  column++;
-                }
-                else
-                { 
-                  row++;
-                  column=0;
-                }
-              }
-              for(int j=0;j<dashes+1;j++)
-              {
-                if(strcmp(name_array[j],search_name)==0)
-                {
-                  search_array[index]=i;
-                  index++;
-                  break;
-                }
-              }
-            }
+            search_name[strlen(search_name)]='\0';
             break;
- 
-    case 2: printf("Please enter the phone number to be searched in the directory\n");
-            char search_phone[50];
-            scanf("%s",search_phone);
-            for(i=0;i<number_of_contacts;i++)
-            {
-              if(strcmp(contacts[i].phone_number1,search_phone)==0)
-              {
-                search_array[index]=i;
-                index++;
-              }
-            }
-            for(i=0;i<number_of_contacts;i++)
-            {
-              if(strcmp(contacts[i].phone_number2,search_phone)==0)
-              {
-                search_array[index]=i;
-                index++;
-              }
-            }
-            break;
- 
-    case 3: printf("Please enter the email address to be searched in the directory\n");
-            char search_email[50];
-            scanf("%s",search_email);
-            for(i=0;i<number_of_contacts;i++)
-            {
-              if(strcmp(contacts[i].email_address,search_email)==0)
-              {
-                search_array[index]=i;
-                index++;
-              }
-            }
-            break;
- 
-    case 4: printf("Please enter the occupation to be searched in the directory\n");
-            char search_occupation[50];
-            scanf("%s",search_occupation);
-            for(i=0;i<number_of_contacts;i++)
-            {
-              if(strcmp(contacts[i].occupation,search_occupation)==0)
-              {
-                search_array[index]=i;
-                index++;
-              }
-            }
+  
+    case 2: system("clear");
+            printf("Please enter the phone number to be searched in the directory\n");
+            scanf("%s",search_phone); 
+            search_phone[10]='\0';
             break;
 
-    case 5: printf("Please enter the date of birth in dd/mm/yyyy format to be searched in the directory\n");
-            char search_dob[50];
-            scanf("%s",search_dob);
-            for(i=0;i<number_of_contacts;i++)
-            {
-              if(strcmp(contacts[i].date_of_birth,search_dob)==0)
-              {
-                search_array[index]=i;
-                index++;
-              }
-            }
+    case 3: system("clear");
+            printf("Please enter the email address to be searched in the directory\n");
+            scanf("%s",search_email);
             break;
-   
+    
+    case 4: system("clear");
+            printf("Please enter the occupation to be searched in the directory\n");
+            scanf("%s",search_occupation);
+            break;
+
+    case 5: system("clear");
+            printf("Please enter the date of birth in dd/mm/yyyy format to be searched in the directory\n");
+            scanf("%s",search_dob);
+            break;
+    
     default: printf("You are requested to make a valid input choice");
              break;
   }
-  if(index>0)
+  while(!feof(fp))
   {
-    if(index>1)
-      printf("%d matches were found\n",index);
-    else if(index==1)
-      printf("Only 1 match found");   
-    printf("The following are the details:\n");
-    for(i=0;i<index;i++)
+    fgets(single_contact,1999,fp);
+    row=0;
+    column=0;
+    for(i=0;i<strlen(single_contact);i++)
     {
-      printf("Name: %s\n",contacts[search_array[i]].name);
-      printf("Phone Number: %s\n",contacts[search_array[i]].phone_number1);
-      if(contacts[search_array[i]].phone_number2[0]!='*')
-        printf("              %s\n",contacts[search_array[i]].phone_number2);
-      if(contacts[search_array[i]].email_address[0]!='*')
-        printf("Email Address: %s",contacts[search_array[i]].email_address);
-      if(contacts[search_array[i]].residential_address[0]!='*')
-        printf("Residential Address: %s",contacts[search_array[i]].residential_address);
-      if(contacts[search_array[i]].occupation[0]!='*')
-        printf("Occupation: %s",contacts[search_array[i]].occupation);
-      if(contacts[search_array[i]].date_of_birth[0]!='*')  
-        printf("Date of Birth: %s",contacts[search_array[i]].date_of_birth);
+      if(single_contact[i]!='\t')
+      {
+        details[row][column]=single_contact[i];
+        column++;
+      }
+      else
+      {
+        row++;
+        column=0;
+      }
+    }
+    switch(search_choice)
+    {
+      case 1: dashes=0;
+              details[0][strlen(details[0])]='\0';
+              details[1][10]='\0';
+              for(i=0;i<strlen(details[0]);i++)
+              {
+                if(details[0][i]==' ')
+                dashes++;
+              }
+              r=0;
+              c=0;
+              for(i=0;i<strlen(details[0]);i++)
+              {
+                if(details[0][i]!=' ')
+                {
+                  name_2Darray[r][c]=details[0][i];
+                  c++;
+                }
+                else
+                { 
+                  r++;
+                  c=0;
+                }
+              }
+              for(i=0;i<dashes+1;i++)
+              { 
+                if(string_compare(name_2Darray[i],search_name)==0)
+                {
+                  print2D(details);
+                  check=1;
+                  break;
+                }
+              }
+              for(i=0;i<6;i++)
+              {
+                for(j=0;j<50;j++)
+                  name_2Darray[i][j]='\0';
+              }
+              break;
+ 
+      case 2: details[1][10]='\0';
+              if(string_compare(details[1],search_phone)==0 || strcmp(details[2],search_phone)==0)
+              {
+                print2D(details);
+                check=1;
+              }
+              break;
+ 
+      case 3: if(string_compare(details[3],search_email)==0)
+              {
+                print2D(details);
+                check=1; 
+              }
+              break;
+ 
+      case 4: dashes=0;
+              for(i=0;i<strlen(details[5]);i++)
+              {
+                if(details[5][i]==' ')
+                dashes++;
+              }
+              r=0;
+              c=0;
+              for(i=0;i<strlen(details[5]);i++)
+              {
+                if(details[5][i]!=' ')
+                {
+                  occupation_2Darray[r][c]=details[5][i];
+                  c++;
+                }
+                else
+                { 
+                  r++;
+                  c=0;
+                }
+              }
+              for(i=0;i<dashes+1;i++)
+              {
+                if(string_compare(occupation_2Darray[i],search_occupation)==0)
+                {
+                  print2D(details);
+                  check=1;
+                  break;
+                } 
+              }
+              for(i=0;i<6;i++)
+              {
+                for(j=0;j<50;j++)
+                  occupation_2Darray[i][j]='\0';
+              }
+              break;
+
+      case 5: details[6][10]='\0';
+              if(string_compare(details[6],search_dob)==0)
+              {
+                print2D(details);
+                check=1;
+              }
+              break;
+    }
+    for(i=0;i<7;i++)
+    {
+      for(j=0;j<175;j++)
+        details[i][j]='\0';
     }
   }
-  else if(index==0)
-    printf("NO Match found");
-  return 0;
-}
-              
+  if(check==0 && search_choice==1 && search_choice==2 && search_choice==3 && search_choice==4 && search_choice==5)
+    printf("\nNO Match found\n");
+}    
